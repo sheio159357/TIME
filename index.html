@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="zh-Hant">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, maximum-scale=1, user-scalable=no" />
+<title>TIME</title>
+<meta name="description" content="TIME — 24 小時生活狀態時間追蹤" />
+<meta name="theme-color" content="#101116" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<meta name="apple-mobile-web-app-title" content="TIME" />
+<link rel="manifest" href="manifest.webmanifest" />
+<link rel="apple-touch-icon" href="icons/apple-touch-icon.png" />
+<link rel="icon" href="icons/icon-192.png" />
+<link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+<div id="app">
+
+  <!-- ============ FIRST LAUNCH ============ -->
+  <section id="onboarding" class="screen hidden">
+    <div class="onboarding-inner">
+      <p class="eyebrow">TIME</p>
+      <h1>What are you doing<br/>right now?</h1>
+      <p class="sub">選一個狀態，開始記錄你的一天。</p>
+      <div id="onboardingGrid" class="state-grid state-grid--onboard"></div>
+    </div>
+  </section>
+
+  <!-- ============ NOW ============ -->
+  <section id="page-now" class="screen page hidden">
+    <header class="now-header">
+      <p class="eyebrow">NOW</p>
+      <div id="activeReadout" class="active-readout">
+        <span id="activeStateName" class="active-state-name">—</span>
+        <span id="activeTimer" class="active-timer">00:00:00</span>
+      </div>
+    </header>
+    <div id="nowGrid" class="state-grid"></div>
+  </section>
+
+  <!-- ============ HISTORY ============ -->
+  <section id="page-history" class="screen page hidden">
+    <header class="page-header">
+      <p class="eyebrow">HISTORY</p>
+      <div class="date-nav">
+        <button id="histPrev" class="date-arrow" aria-label="Previous day">‹</button>
+        <button id="histDateBtn" class="date-label"></button>
+        <button id="histNext" class="date-arrow" aria-label="Next day">›</button>
+      </div>
+      <input id="histDateInput" type="date" class="hidden-date-input" />
+    </header>
+    <div id="historyList" class="segment-list"></div>
+  </section>
+
+  <!-- ============ STATS ============ -->
+  <section id="page-stats" class="screen page hidden">
+    <header class="page-header">
+      <p class="eyebrow">STATS</p>
+      <div class="date-nav">
+        <button id="statsPrev" class="date-arrow" aria-label="Previous day">‹</button>
+        <button id="statsDateBtn" class="date-label"></button>
+        <button id="statsNext" class="date-arrow" aria-label="Next day">›</button>
+      </div>
+      <input id="statsDateInput" type="date" class="hidden-date-input" />
+    </header>
+    <div id="statsBody"></div>
+  </section>
+
+  <!-- ============ TAB BAR ============ -->
+  <nav id="tabbar" class="tabbar hidden">
+    <button class="tab-btn" data-page="now">
+      <span class="tab-dot"></span>NOW
+    </button>
+    <button class="tab-btn" data-page="history">HISTORY</button>
+    <button class="tab-btn" data-page="stats">STATS</button>
+  </nav>
+
+</div>
+
+<!-- ============ EDIT SEGMENT MODAL ============ -->
+<div id="editModal" class="modal-overlay hidden">
+  <div class="modal">
+    <p class="modal-eyebrow">EDIT SEGMENT</p>
+    <div class="field">
+      <label>狀態</label>
+      <div id="editStateChips" class="chip-row"></div>
+    </div>
+    <div class="field-row">
+      <div class="field">
+        <label>開始時間</label>
+        <input id="editStart" type="time" step="1" />
+      </div>
+      <div class="field">
+        <label>結束時間</label>
+        <input id="editEnd" type="time" step="1" />
+      </div>
+    </div>
+    <p id="editHint" class="modal-hint"></p>
+    <p id="editError" class="modal-error hidden"></p>
+    <div class="modal-actions">
+      <button id="editSplitBtn" class="btn btn-ghost">切割 Split</button>
+      <div class="modal-actions-right">
+        <button id="editCancelBtn" class="btn btn-ghost">取消</button>
+        <button id="editSaveBtn" class="btn btn-primary">儲存</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ============ SPLIT MODAL ============ -->
+<div id="splitModal" class="modal-overlay hidden">
+  <div class="modal">
+    <p class="modal-eyebrow">SPLIT SEGMENT</p>
+    <div class="field">
+      <label>切割時間點</label>
+      <input id="splitTime" type="time" step="1" />
+    </div>
+    <div class="field">
+      <label>後段狀態</label>
+      <div id="splitStateChips" class="chip-row"></div>
+    </div>
+    <p id="splitError" class="modal-error hidden"></p>
+    <div class="modal-actions">
+      <div></div>
+      <div class="modal-actions-right">
+        <button id="splitCancelBtn" class="btn btn-ghost">取消</button>
+        <button id="splitSaveBtn" class="btn btn-primary">切割</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="toast" class="toast hidden"></div>
+
+<script src="app.js"></script>
+</body>
+</html>
